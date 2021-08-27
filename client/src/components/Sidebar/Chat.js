@@ -24,6 +24,9 @@ const Chat = (props) => {
   const { conversation } = props;
   const { otherUser } = conversation;
 
+  //Sort messages based on date created
+  conversation.messages && conversation.messages.sort((a,b) => Date.parse(a.createdAt) - Date.parse(b.createdAt));
+
   const handleClick = async (conversation) => {
     await props.setActiveChat(conversation.otherUser.username);
   };
