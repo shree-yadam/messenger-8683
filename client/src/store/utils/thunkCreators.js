@@ -73,6 +73,7 @@ export const fetchConversations = () => async (dispatch) => {
   try {
     const { data } = await axios.get("/api/conversations");
 
+    //Sort messages based on date created
     data.map((conversation) => {
       conversation.messages &&
         conversation.messages.sort(
