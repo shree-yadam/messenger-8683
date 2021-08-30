@@ -25,6 +25,7 @@ const ChatContent = (props) => {
 
   const { conversation } = props;
   const { latestMessageText, otherUser } = conversation;
+  console.log("SDY: ", conversation);
 
   return (
     <Box className={classes.root}>

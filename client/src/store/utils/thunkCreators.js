@@ -79,6 +79,8 @@ export const fetchConversations = () => async (dispatch) => {
         conversation.messages.sort(
           (a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt)
         );
+      conversation.unreadCount = conversation.messages &&
+        conversation.messages.reduce((prev, curr) =>!curr.read? prev + 1: prev, 0);
       return conversation;
     });
     dispatch(gotConversations(data));
