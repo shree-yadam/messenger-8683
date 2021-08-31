@@ -69,3 +69,14 @@ class Conversations(APIView):
             )
         except Exception as e:
             return HttpResponse(status=500)
+
+    def put(self, request, conversationId):
+        try:
+          conversation = Conversation.objects.get(id=conversationId)
+          messages = Message.objects.filter(conversation_id = conversation.id)
+          for message in messages:
+            message.read = True
+            message.save()
+          return HttpResponse(status=200)
+        except Exception as e:
+            return HttpResponse(status=500)
