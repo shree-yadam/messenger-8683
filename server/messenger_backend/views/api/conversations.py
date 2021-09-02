@@ -45,6 +45,9 @@ class Conversations(APIView):
                 # set properties for notification count and latest message preview
                 convo_dict["latestMessageText"] = convo_dict["messages"][0]["text"]
 
+                #set unread messages for conversation
+                convo_dict["unreadCount"] = convo.messages.filter(~Q(senderId = user_id)).filter(Q(read = False)).count()
+
                 # set a property "otherUser" so that frontend will have easier access
                 user_fields = ["id", "username", "photoUrl"]
                 if convo.user1 and convo.user1.id != user_id:
@@ -73,7 +76,7 @@ class Conversations(APIView):
     def put(self, request, conversationId):
         try:
           conversation = Conversation.objects.get(id=conversationId)
-          messages = Message.objects.filter(conversation_id = conversation.id)
+          messages = Message.objects.filter(Q(conversation_id = conversation.id))
           for message in messages:
             message.read = True
             message.save()
