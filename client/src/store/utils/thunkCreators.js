@@ -128,6 +128,7 @@ export const searchUsers = (searchTerm) => async (dispatch) => {
   }
 };
 
+// update message read in dB
 export const updateConversation = (body) => async (dispatch) => {
   try {
     await axios.put(`/api/conversations/${body}`);

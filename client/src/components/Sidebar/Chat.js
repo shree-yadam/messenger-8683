@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Badge } from "@material-ui/core";
 import { BadgeAvatar, ChatContent } from "../Sidebar";
 import { makeStyles } from "@material-ui/core/styles";
@@ -24,11 +24,21 @@ const Chat = (props) => {
   const classes = useStyles();
   const { conversation } = props;
   const { otherUser } = conversation;
+  const [isActiveChat, setIsActiveChat] = useState(false);
 
   const handleClick = async (conversation) => {
     await props.setActiveChat(conversation.otherUser.username);
     props.updateConversation(conversation.id);
+    setIsActiveChat(true);
   };
+
+  useEffect(() => {
+    return () => {
+      if(isActiveChat){
+        props.updateConversation(conversation.id);
+      }
+    }
+  }, [isActiveChat])
 
   return (
     <Box onClick={() => handleClick(conversation)} className={classes.root}>
@@ -39,7 +49,8 @@ const Chat = (props) => {
         sidebar={true}
       />
       <ChatContent conversation={conversation} />
-      <Badge badgeContent={conversation.unreadCount} color="primary" />
+      {!isActiveChat &&
+        <Badge badgeContent={conversation.unreadCount} color="primary" />}
 
     </Box>
   );
