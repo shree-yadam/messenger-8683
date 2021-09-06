@@ -48,7 +48,7 @@ const Chat = (props) => {
         online={otherUser.online}
         sidebar={true}
       />
-      <ChatContent conversation={conversation} />
+      <ChatContent conversation={conversation} isUnread={conversation.unreadCount === 0? false : true}/>
       {!isActiveChat &&
         <Badge badgeContent={conversation.unreadCount} color="primary" />}
 
