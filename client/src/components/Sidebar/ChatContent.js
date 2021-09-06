@@ -20,9 +20,8 @@ const useStyles = makeStyles((theme) => ({
   },
   previewText__bold: {
     fontSize: 12,
-    color: "#9CADC8",
     letterSpacing: -0.17,
-    fontWeight: "bold",
+    fontWeight: 600,
   }
 }));
 
