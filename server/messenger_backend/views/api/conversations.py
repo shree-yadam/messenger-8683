@@ -80,6 +80,6 @@ class Conversations(APIView):
           for message in messages:
             message.read = True
             message.save()
-          return HttpResponse(status=200)
+          return HttpResponse(status=204)
         except Exception as e:
             return HttpResponse(status=500)
