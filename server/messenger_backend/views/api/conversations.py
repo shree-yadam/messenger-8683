@@ -75,6 +75,11 @@ class Conversations(APIView):
 
     def put(self, request, conversationId):
         try:
+          user = get_user(request)
+
+          if user.is_anonymous:
+            return HttpResponse(status=401)
+
           conversation = Conversation.objects.get(id=conversationId)
           messages = Message.objects.filter(Q(conversation_id = conversation.id))
           for message in messages:
