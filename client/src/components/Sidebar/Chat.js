@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Badge } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import { BadgeAvatar, ChatContent } from "../Sidebar";
 import { makeStyles } from "@material-ui/core/styles";
 import { setActiveChat } from "../../store/activeConversation";
@@ -48,9 +48,7 @@ const Chat = (props) => {
         online={otherUser.online}
         sidebar={true}
       />
-      <ChatContent conversation={conversation} isUnread={conversation.unreadCount === 0? false : true}/>
-      {!isActiveChat &&
-        <Badge badgeContent={conversation.unreadCount} color="primary" />}
+      <ChatContent conversation={conversation} isUnread={conversation.unreadCount === 0? false : true} isActiveChat={isActiveChat}/>
 
     </Box>
   );
