@@ -34,11 +34,11 @@ const Chat = (props) => {
 
   useEffect(() => {
     return () => {
-      if(isActiveChat){
+      if(isActiveChat && conversation.unreadCount > 0){
         props.updateConversation(conversation.id);
       }
     }
-  }, [isActiveChat])
+  }, [conversation.unreadCount])
 
   return (
     <Box onClick={() => handleClick(conversation)} className={classes.root}>
