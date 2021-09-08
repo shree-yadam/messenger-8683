@@ -89,6 +89,9 @@ class Conversations(APIView):
             return HttpResponse(status=401)
 
           conversation = Conversation.objects.get(id=conversationId)
+          if user.id != conversation.user1.id and user.id != conversation.user2.id:
+            return HttpResponse(status=401)
+
           messages = Message.objects.filter(Q(conversation_id = conversation.id))
           for message in messages:
             message.read = True
