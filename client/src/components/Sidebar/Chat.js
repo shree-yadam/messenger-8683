@@ -22,21 +22,17 @@ const useStyles = makeStyles((theme) => ({
 
 const Chat = (props) => {
   const classes = useStyles();
-  const { conversation } = props;
+  const { conversation, activeConversation } = props;
   const { otherUser } = conversation;
-  const [isActiveChat, setIsActiveChat] = useState(false);
 
   const handleClick = async (conversation) => {
     await props.setActiveChat(conversation.otherUser.username);
     props.updateConversation(conversation.id);
-    setIsActiveChat(true);
   };
 
   useEffect(() => {
-    return () => {
-      if(isActiveChat && conversation.unreadCount > 0){
-        props.updateConversation(conversation.id);
-      }
+    if(otherUser.username ===  activeConversation && conversation.unreadCount > 0){
+      props.updateConversation(conversation.id);
     }
   }, [conversation.unreadCount])
 
@@ -48,7 +44,7 @@ const Chat = (props) => {
         online={otherUser.online}
         sidebar={true}
       />
-      <ChatContent conversation={conversation} isUnread={conversation.unreadCount === 0? false : true} isActiveChat={isActiveChat}/>
+      <ChatContent conversation={conversation} isUnread={conversation.unreadCount === 0? false : true} isActiveChat={otherUser ===  activeConversation}/>
 
     </Box>
   );
@@ -65,4 +61,10 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(Chat);
+const mapStateToProps = (state) => {
+  return {
+    activeConversation: state.activeConversation
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Chat);

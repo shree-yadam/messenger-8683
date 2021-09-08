@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 const ChatContent = (props) => {
   const classes = useStyles();
 
-  const { conversation } = props;
+  const { conversation, isActiveChat } = props;
   const { latestMessageText, otherUser } = conversation;
 
   return (
@@ -44,7 +44,7 @@ const ChatContent = (props) => {
         </Typography>
       </Box>
       <Box>
-      {!props.isActiveChat &&
+      {!isActiveChat &&
         <Badge badgeContent={conversation.unreadCount} color="primary" />}
       </Box>
     </Box>
