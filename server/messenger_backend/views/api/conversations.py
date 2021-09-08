@@ -42,6 +42,14 @@ class Conversations(APIView):
                     ],
                 }
 
+                lastReadMessage = -1
+                for message in convo_dict["messages"]:
+                    if message["senderId"] == user_id and message["read"] == True:
+                        lastReadMessage = message["id"]
+                        break
+
+                convo_dict["lastReadMessage"] = lastReadMessage
+
                 # set properties for notification count and latest message preview
                 convo_dict["latestMessageText"] = convo_dict["messages"][0]["text"]
 
