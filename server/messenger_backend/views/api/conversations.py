@@ -37,13 +37,24 @@ class Conversations(APIView):
                 convo_dict = {
                     "id": convo.id,
                     "messages": [
-                        message.to_dict(["id", "text", "senderId", "createdAt"])
+                        message.to_dict(["id", "text", "senderId", "createdAt", "read"])
                         for message in convo.messages.all()
                     ],
                 }
 
+                lastReadMessage = -1
+                for message in convo_dict["messages"]:
+                    if message["senderId"] == user_id and message["read"] == True:
+                        lastReadMessage = message["id"]
+                        break
+
+                convo_dict["lastReadMessage"] = lastReadMessage
+
                 # set properties for notification count and latest message preview
                 convo_dict["latestMessageText"] = convo_dict["messages"][0]["text"]
+
+                #set unread messages for conversation
+                convo_dict["unreadCount"] = convo.messages.filter(~Q(senderId = user_id)).filter(Q(read = False)).count()
 
                 # set a property "otherUser" so that frontend will have easier access
                 user_fields = ["id", "username", "photoUrl"]
@@ -67,5 +78,21 @@ class Conversations(APIView):
                 conversations_response,
                 safe=False,
             )
+        except Exception as e:
+            return HttpResponse(status=500)
+
+    def put(self, request, conversationId):
+        try:
+          user = get_user(request)
+
+          if user.is_anonymous:
+            return HttpResponse(status=401)
+
+          conversation = Conversation.objects.get(id=conversationId)
+          if user.id != conversation.user1.id and user.id != conversation.user2.id:
+            return HttpResponse(status=401)
+
+          Message.objects.filter(conversation_id=conversationId).exclude(senderId=user.id).update(read=True)
+          return HttpResponse(status=204)
         except Exception as e:
             return HttpResponse(status=500)

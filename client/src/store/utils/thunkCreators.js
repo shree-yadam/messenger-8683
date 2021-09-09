@@ -5,6 +5,7 @@ import {
   addConversation,
   setNewMessage,
   setSearchedUsers,
+  resetUnreadCount
 } from "../conversations";
 import { gotUser, setFetchingStatus } from "../user";
 
@@ -126,3 +127,13 @@ export const searchUsers = (searchTerm) => async (dispatch) => {
     console.error(error);
   }
 };
+
+// update message read in dB
+export const updateConversation = (body) => async (dispatch) => {
+  try {
+    await axios.put(`/api/conversations/${body}`);
+    dispatch(resetUnreadCount(body))
+  } catch (error) {
+    console.error(error);
+  }
+}
