@@ -1,5 +1,5 @@
 from django.db import migrations
-from messenger_backend.models import User, Conversation, Message
+from messenger_backend.models import User, Conversation, Message, Conversation_User
 
 
 def seed():
@@ -7,6 +7,7 @@ def seed():
     User.objects.all().delete()
     Conversation.objects.all().delete()
     Message.objects.all().delete()
+    Conversation_User.objects.all().delete()
 
     thomas = User(
         username="thomas",
@@ -28,6 +29,10 @@ def seed():
 
     santiagoConvo = Conversation(user1=thomas, user2=santiago)
     santiagoConvo.save()
+    convUser = Conversation_User(user=thomas, conversation=santiagoConvo)
+    convUser.save()
+    convUser = Conversation_User(user=santiago, conversation=santiagoConvo)
+    convUser.save()
 
     messages = Message(
         conversation=santiagoConvo, senderId=santiago.id, text="Where are you from?"
@@ -56,6 +61,10 @@ def seed():
 
     chiumboConvo = Conversation(user1=chiumbo, user2=thomas)
     chiumboConvo.save()
+    convUser = Conversation_User(user=thomas, conversation=chiumboConvo)
+    convUser.save()
+    convUser = Conversation_User(user=chiumbo, conversation=chiumboConvo)
+    convUser.save()
 
     messages = Message(
         conversation=chiumboConvo, senderId=chiumbo.id, text="Sure! What time?"
@@ -72,6 +81,10 @@ def seed():
 
     hualingConvo = Conversation(user1=hualing, user2=thomas)
     hualingConvo.save()
+    convUser = Conversation_User(user=thomas, conversation=hualingConvo)
+    convUser.save()
+    convUser = Conversation_User(user=hualing, conversation=hualingConvo)
+    convUser.save()
 
     for i in range(10):
         messages = Message(
